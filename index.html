@@ -13,8 +13,11 @@
     <body>
 
         <header>
+          <h1>News API</h1>
             <form action="#" id="searchForm">
-                <input type="text" name="searchSourceData" id="searchSourceData" minlength="1" required placeholder="Search source...">
+                <select type="text" name="searchSourceData" id="searchSourceData" minlength="1" required placeholder="Search source...">
+                  <option value="">--Please choose an option--</option>
+                </select>
                 <input type="text" name="searchKeywordData" id="searchKeywordData" minlength="1" placeholder="Search keyword (optionel)">
 
                 <button type="submit"><i class="fas fa-search"></i></button>
@@ -22,7 +25,9 @@
         </header>
 
         <main>
-          <section id="newsList"></section>
+          <h2 id="titleSearch"></h2>
+          <section id="newsList">
+          </section>
         </main>
 
         <footer>

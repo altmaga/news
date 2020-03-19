@@ -11,11 +11,23 @@ document.addEventListener('DOMContentLoaded', () => {
       const searchSourceData = document.querySelector('[name="searchSourceData"]');
       const searchKeywordData = document.querySelector('[name="searchKeywordData"]');
       const newsList = document.querySelector('#newsList');
+      const titleSearch = document.querySelector('#titleSearch');
   //
 
   /*
   Fonctions
   */
+
+  const getSource = () => {
+    new FETCHrequest(`${apiUrl}/news/sources`, 'GET')
+    .fetch()
+    .then( fetchData => {
+      displaySourceOption(fetchData.data.sources)
+    })
+    .catch( fetchError => {
+        console.log(fetchError)
+    })
+  }
 
   const getFormSubmit = () => {
       // Get searchForm submit
@@ -29,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
           new FETCHrequest(urlSearch, 'GET')
           .fetch()
           .then( fetchData => {
-              displayNewsList(fetchData.data.articles)
+              displayTitleSearch(fetchData.data);
+              displayNewsList(fetchData.data.articles);
           })
           .catch( fetchError => {
               console.log(fetchError)
@@ -40,7 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
           new FETCHrequest(urlSearch, 'GET')
           .fetch()
           .then( fetchData => {
-              displayNewsList(fetchData.data.articles)
+              displayTitleSearch(fetchData.data);
+              displayNewsList(fetchData.data.articles);
           })
           .catch( fetchError => {
               console.log(fetchError)
@@ -52,12 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const displayTitleSearch = title => {
+    titleSearch.innerHTML = `Resultat(s) trouvé(s) : ${title.totalResults} pour ${searchSourceData.value} et ${searchKeywordData.value}`;
+  }
+
   const displayNewsList = collection => {
     searchSourceData.value = '';
     searchKeywordData.value = '';
     newsList.innerHTML = '';
-
-    console.log(collection);
 
     for( let i = 0; i < collection.length; i++ ) {
         newsList.innerHTML += `
@@ -74,6 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+  const displaySourceOption = list => {
+      for( let i = 0; i < list.length; i++ ) {
+        searchSourceData.innerHTML += `<option value="${list[i].id}">${list[i].name}</option>`;
+    };
+  }
+
   /*
   Lancer IHM
   */
@@ -81,5 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
       Start interface by checkingg if user token is prersent
       */
 
+      getSource();
       getFormSubmit();
 });
