@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const loginForm = document.querySelector('#loginForm');
       const loginEmail = document.querySelector('[name="loginEmail"]');
       const loginPassword = document.querySelector('[name="loginPassword"]');
+      // Favorite
+      const favoriteList = document.querySelector('#favoriteList');
   //
 
   /*
@@ -42,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(fetchError)
     })
   }
+  getSource();
 
   const checkUserToken = () => {
       new FETCHrequest(
@@ -186,8 +189,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </figure>
                 <p>${collection[i].description}</p>
                 <a href="${collection[i].url}" target="_blank">Voir l\'article</a>
+                <button id="favoriteButton"><i class="fas fa-bookmark"></i>${collection[i].source.name}</button>
             </article>
         `;
+        // addFavorite(document.querySelector('#favoriteButton'), collection[i]);
     };
   }
 
@@ -204,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     mainNav.classList.remove('hidden');
+    favoriteList.classList.remove('hidden');
 
     document.querySelector('#logoutBtn').addEventListener('click', () => {
         // Delete LocalStorage
@@ -213,7 +219,38 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm.classList.remove('hidden');
         searchForm.classList.remove('open');
     })
-}
+  }
+
+  const addFavorite = (button, data) => {
+    button.addEventListener('click', () => {
+      new FETCHrequest(`${apiUrl}/bookmark`, 'POST', {
+        id: data.source.id,
+        name: data.source.name,
+        description: data.description,
+        url: data.url,
+        category: data.category,
+        language: data.language,
+        country: data.country,
+        token: localStorage.getItem(localSt),
+    })
+    .fetch()
+    .then( fetchData => {
+      console.log(fetchData);
+        // checkUserToken('favorite')
+    })
+    .catch( fetchError => {
+        console.log(fetchError)
+    })
+      // new FETCHrequest(`${apiUrl}/news/sources`, 'GET')
+      // .fetch()
+      // .then( fetchData => {
+      //   console.log(fetchData);
+      // })
+      // .catch( fetchError => {
+      //     console.log(fetchError)
+      // })
+    })
+  }
 
   /*
   Lancer IHM
@@ -228,6 +265,5 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       else{
           getFormSubmit();
-          getSource();
       };
 });
