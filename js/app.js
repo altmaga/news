@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Favorite
       const favoriteList = document.querySelector('#favoriteList');
       const addBookmark = document.querySelector('#addToBookmark');
-      let sourceDetail =  [];
   //
 
   /*
@@ -270,7 +269,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const deleteBookmark = favorites => {
-    console.log(favorites);
     for (let item of favorites) {
         item.addEventListener('click', () => {
             new FETCHrequest(
