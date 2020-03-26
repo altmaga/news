@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Déclarations
   */
       // Generals
+      const apiKey = 'fb2d49e718e54609ac8b933b920029d1';
       const apiUrl = 'https://newsapp.dwsapp.io/api';
       const mainNav = document.querySelector('header nav');
       const localSt = 'user._id';
@@ -28,6 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const loginPassword = document.querySelector('[name="loginPassword"]');
       // Favorite
       const favoriteList = document.querySelector('#favoriteList');
+      const addBookmark = document.querySelector('#addToBookmark');
+      let sourceDetail =  [];
   //
 
   /*
@@ -35,16 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
   */
 
   const getSource = () => {
-    new FETCHrequest(`${apiUrl}/news/sources`, 'GET')
+    new FETCHrequest(
+      `${apiUrl}/news/sources`,
+      'POST', {
+          "news_api_token": apiKey
+        }
+      )
     .fetch()
     .then( fetchData => {
-      displaySourceOption(fetchData.data.sources)
+      displaySourceOption(fetchData.data.sources);
     })
     .catch( fetchError => {
         console.log(fetchError)
     })
   }
-  getSource();
 
   const checkUserToken = () => {
       new FETCHrequest(
@@ -63,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Display nav
         displayNav(fetchData.data.user.firstname);
+        displayBookmarkList(fetchData.data.bookmark);
 
         // Get form submit event
         getFormSubmit();
@@ -140,9 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         // Check form data
+        // If source without keyword
         if(searchSourceData.value.length > 0 && searchKeywordData.value.length === 0){
           const urlSearch = `${apiUrl}/news/${searchSourceData.value}/null`;
-          new FETCHrequest(urlSearch, 'GET')
+          new FETCHrequest(urlSearch,
+            'POST', {
+              "news_api_token": apiKey
+            }
+          )
           .fetch()
           .then( fetchData => {
               displayTitleSearch(fetchData.data);
@@ -152,9 +165,14 @@ document.addEventListener('DOMContentLoaded', () => {
               console.log(fetchError)
           })
         }
+        // If source with keyword
         else if (searchSourceData.value.length > 0 && searchKeywordData.value.length > 0) {
           const urlSearch = `${apiUrl}/news/${searchSourceData.value}/${searchKeywordData.value}`;
-          new FETCHrequest(urlSearch, 'GET')
+          new FETCHrequest(urlSearch,
+            'POST', {
+                "news_api_token": apiKey
+              }
+            )
           .fetch()
           .then( fetchData => {
               displayTitleSearch(fetchData.data);
@@ -175,8 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const displayNewsList = collection => {
-    searchSourceData.value = '';
-    searchKeywordData.value = '';
+    // searchSourceData.value = '';
+    // searchKeywordData.value = '';
     newsList.innerHTML = '';
 
     for( let i = 0; i < 10; i++ ) {
@@ -189,23 +207,90 @@ document.addEventListener('DOMContentLoaded', () => {
                 </figure>
                 <p>${collection[i].description}</p>
                 <a href="${collection[i].url}" target="_blank">Voir l\'article</a>
-                <button id="favoriteButton"><i class="fas fa-bookmark"></i>${collection[i].source.name}</button>
             </article>
         `;
-        // addFavorite(document.querySelector('#favoriteButton'), collection[i]);
     };
   }
 
   const displaySourceOption = list => {
-      for( let i = 0; i < list.length; i++ ) {
-        searchSourceData.innerHTML += `<option value="${list[i].id}">${list[i].name}</option>`;
+    // Recuperer toutes les infos des sources pour l'ajout au favoris
+    // Recuperer l'id et le name de la source pour l'afficher dans l'option du select
+    for( let i = 0; i < list.length; i++ ) {
+      searchSourceData.innerHTML += `<option value="${list[i].id}">${list[i].name}</option>`;
     };
+
+    searchSourceData.addEventListener('change', event => {
+      for(let item of list) {
+        if(item.id === event.target.value){
+          addFavorite(item);
+        }
+      }
+    });
   }
+
+
+  const addFavorite = data => {
+    addBookmark.addEventListener('click', () => {
+      new FETCHrequest(
+        `${apiUrl}/bookmark`,
+        'POST', {
+            'id': data.id,
+            'name': data.name,
+            'description': data.description,
+            'url': data.url,
+            'category': data.category,
+            'language': data.language,
+            'country': data.country,
+            'token': localStorage.getItem(localSt),
+          }
+        )
+      .fetch()
+      .then( fetchData => {
+        console.log(fetchData);
+        checkUserToken();
+      })
+      .catch( fetchError => {
+          console.log(fetchError)
+      })
+    })
+  }
+
+  const displayBookmarkList = bookmark => {
+    favoriteList.innerHTML = '';
+
+    for( let i = 0; i < bookmark.length; i++ ) {
+      favoriteList.innerHTML += `<p class="${bookmark[i].id}">
+          ${bookmark[i].name}
+          <button id="remove-favorite" news-id="${bookmark[i].id}">remove</button></p>
+        `;
+    };
+
+    let allButtonDelete = document.querySelectorAll('#remove-favorite');
+    deleteBookmark(allButtonDelete);
+  }
+
+  const deleteBookmark = favorites => {
+    console.log(favorites);
+    for (let item of favorites) {
+        item.addEventListener('click', () => {
+            new FETCHrequest(
+            `${apiUrl}/bookmark/${item.getAttribute('news-id')}`,
+            'DELETE', {
+                'token': localStorage.getItem(localSt)
+            })
+            .fetch()
+            .then(fetchData => console.log(fetchData))
+            .catch(fetchError => {
+                console.log(fetchError)
+            })
+        })
+    }
+}
 
   const displayNav = pseudo => {
     mainNav.innerHTML = `
-        <p>Hello ${pseudo}</p>
-        <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i></button>
+        <p>Hello ${pseudo}, découvres les news du monde entier !</p>
+        <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i>Se déconnecter</button>
     `;
 
     mainNav.classList.remove('hidden');
@@ -221,37 +306,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  const addFavorite = (button, data) => {
-    button.addEventListener('click', () => {
-      new FETCHrequest(`${apiUrl}/bookmark`, 'POST', {
-        id: data.source.id,
-        name: data.source.name,
-        description: data.description,
-        url: data.url,
-        category: data.category,
-        language: data.language,
-        country: data.country,
-        token: localStorage.getItem(localSt),
-    })
-    .fetch()
-    .then( fetchData => {
-      console.log(fetchData);
-        // checkUserToken('favorite')
-    })
-    .catch( fetchError => {
-        console.log(fetchError)
-    })
-      // new FETCHrequest(`${apiUrl}/news/sources`, 'GET')
-      // .fetch()
-      // .then( fetchData => {
-      //   console.log(fetchData);
-      // })
-      // .catch( fetchError => {
-      //     console.log(fetchError)
-      // })
-    })
-  }
-
   /*
   Lancer IHM
   */
@@ -260,10 +314,18 @@ document.addEventListener('DOMContentLoaded', () => {
       */
      if( localStorage.getItem(localSt) !== null ){
         console.log(localStorage.getItem(localSt))
-        // Get user onnfoprmations
+        // Display list source
+        getSource();
+        addFavorite();
+        // Get user informations
         checkUserToken();
       }
       else{
-          getFormSubmit();
+        // Display list source
+        getSource();
+        addFavorite();
+
+        // Register or login area
+        getFormSubmit();
       };
 });

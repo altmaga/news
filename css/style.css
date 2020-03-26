@@ -1,7 +1,36 @@
+.body {
+}
+
+header, main, footer {
+  padding: 8rem;
+}
+
 .hidden{
   display: none;
 }
 
 .open {
   display: block;
+}
+
+i {
+  margin-right: 5px;
+}
+
+.button, button, input[type='button'], input[type='reset'], input[type='submit'] {
+  background-color: #FC930A;
+  border-color: #FC930A;
+}
+
+h1, h2 {
+  font-family: 'Roboto Mono', monospace;
+  color: #FC930A;
+}
+
+h1 {
+  border-bottom: 3px solid #FC930A;
+}
+
+nav p {
+  font-family: 'Roboto Mono', monospace;
 }
