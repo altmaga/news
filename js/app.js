@@ -287,10 +287,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const displayNav = pseudo => {
     mainNav.innerHTML = `
-        <h3><strong>Hello ${pseudo}</strong>, </br>découvres les news du monde entier !</h3>
+        <h3><strong>Hello ${pseudo}</strong>, </br>discover news from around the world!</h3>
         <div>
-          <button id="fav"><i class="fas fa-heart"></i>Favoris</button>
-          <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i>Se déconnecter</button>
+          <button id="fav"><i class="fas fa-heart"></i>Bookmark</button>
+          <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i>Log out</button>
         </div>
     `;
 
