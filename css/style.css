@@ -3,6 +3,7 @@
 */
 body {
   padding: 8rem;
+  color: #000;
 }
 
 i {
@@ -14,19 +15,27 @@ i {
   border-color: #FC930A;
   padding: 0 1.0rem;
   margin-bottom: 0rem;
+  transition: all .3s ease;
+}
+
+.button:focus, .button:hover, button:focus, button:hover, input[type='button']:focus, input[type='button']:hover, input[type='reset']:focus, input[type='reset']:hover, input[type='submit']:focus, input[type='submit']:hover {
+  background-color: #000;
+  border-color: #000;
 }
 
 input[type='email']:focus, input[type='number']:focus, input[type='password']:focus, input[type='search']:focus, input[type='tel']:focus, input[type='text']:focus, input[type='url']:focus, textarea:focus, select:focus {
   border-color: #FC930A;
 }
 
+h1 {
+  border-bottom: 30px solid #FC930A;
+  font-size: 95px;
+  margin-bottom: 100px;
+}
+
 h1, h2 {
   font-family: 'Roboto Mono', monospace;
   color: #FC930A;
-}
-
-h1 {
-  border-bottom: 3px solid #FC930A;
 }
 
 h3 {
@@ -37,14 +46,15 @@ p {
   margin-bottom: 0;
 }
 
-nav p {
-  font-family: 'Roboto Mono', monospace;
-}
-
 a {
   color: #FC930A;
   font-family: 'Roboto Mono', monospace;
   font-weight: 600;
+}
+
+a:hover {
+  background-color: #000;
+  color: #fff;
 }
 
 figcaption {
@@ -74,6 +84,15 @@ aside {
   margin-bottom: 1.5rem;
 }
 
+
+nav p {
+  font-family: 'Roboto Mono', monospace;
+}
+
+nav div {
+  text-align: right;
+}
+
 /* Article */
 
 #newsList {
@@ -93,12 +112,12 @@ article figure {
 
 #favoriteList {
   position: fixed;
-  background: wheat;
+  background: #000;
   top: 0;
-  right: 0;
+  left: 0;
   width: 30%;
   height: 100vh;
-  transform: translateX(100%);
+  transform: translateX(-100%);
   transition: all .3s ease;
   overflow-x: scroll;
 }
@@ -114,8 +133,29 @@ article figure {
   padding: 20px;
 }
 
+#favoriteList .fav-item a {
+  color: #FFF;
+}
+
+#favoriteList .fav-item a:hover {
+  color: #FC930A;
+}
+
+#favoriteList .fav-item i {
+  color: #FC930A;
+  cursor: pointer;
+}
+
 #favoriteList .fav-item p {
   margin-right: 10px;
   font-family: 'Roboto Mono', monospace;
   font-weight: 600;
+}
+
+/*
+* Forms
+*/
+
+.actions {
+  text-align: right;
 }

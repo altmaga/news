@@ -40,13 +40,16 @@
           </form>
 
           <form action="#" id="searchForm">
-              <select type="text" name="searchSourceData" id="searchSourceData" minlength="1" required placeholder="Search source...">
-                <option value="">--Please choose an option--</option>
-              </select>
-              <input type="text" name="searchKeywordData" id="searchKeywordData" minlength="1" placeholder="Search keyword (optionel)">
+            <h2>Search your news</h2>
+            <select type="text" name="searchSourceData" id="searchSourceData" minlength="1" required placeholder="Search source...">
+              <option value="">--Please choose an option--</option>
+            </select>
+            <input type="text" name="searchKeywordData" id="searchKeywordData" minlength="1" placeholder="Search keyword (optionel)">
 
+            <div class="actions">
               <button type="submit"><i class="fas fa-search"></i>Rechercher</button>
               <button type="button" id="addToBookmark"><i class="fas fa-heart"></i>Ajouter la source aux favoris</button>
+            </div>
           </form>
 
         </header>

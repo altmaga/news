@@ -294,6 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     `;
 
+    // Display nav + favoriteList
     mainNav.classList.remove('hidden');
     favoriteList.classList.remove('hidden');
 
