@@ -157,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
           )
           .fetch()
           .then( fetchData => {
-              displayTitleSearch(fetchData.data);
               displayNewsList(fetchData.data.articles);
           })
           .catch( fetchError => {
@@ -174,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
             )
           .fetch()
           .then( fetchData => {
-              displayTitleSearch(fetchData.data);
               displayNewsList(fetchData.data.articles);
           })
           .catch( fetchError => {
@@ -187,10 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const displayTitleSearch = title => {
-    titleSearch.innerHTML = `Resultat(s) trouvé(s) : ${title.totalResults} pour ${searchSourceData.value} et ${searchKeywordData.value}`;
-  }
-
   const displayNewsList = collection => {
     // searchSourceData.value = '';
     // searchKeywordData.value = '';
@@ -199,13 +193,17 @@ document.addEventListener('DOMContentLoaded', () => {
     for( let i = 0; i < 10; i++ ) {
         newsList.innerHTML += `
             <article>
-                <span>${collection[i].source.name}</span>
-                <figure>
-                    <img src="${collection[i].urlToImage}" alt="${collection[i].title}">
-                    <figcaption news-id="${collection[i].source.id}">${collection[i].title}</figcaption>
-                </figure>
-                <p>${collection[i].description}</p>
-                <a href="${collection[i].url}" target="_blank">Voir l\'article</a>
+                <div>
+                  <figure>
+                      <img src="${collection[i].urlToImage}" alt="${collection[i].title}">
+                      <figcaption news-id="${collection[i].source.id}">${collection[i].title}</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <h3>${collection[i].source.name}</h3>
+                  <p>${collection[i].description}</p>
+                  <a href="${collection[i].url}" target="_blank">Voir l\'article</a>
+                </div>
             </article>
         `;
     };
@@ -258,9 +256,11 @@ document.addEventListener('DOMContentLoaded', () => {
     favoriteList.innerHTML = '';
 
     for( let i = 0; i < bookmark.length; i++ ) {
-      favoriteList.innerHTML += `<p class="${bookmark[i].id}">
-          ${bookmark[i].name}
-          <button id="remove-favorite" news-id="${bookmark[i].id}">remove</button></p>
+      favoriteList.innerHTML += `
+          <div class="fav-item ${bookmark[i].id}">
+            <a href="${bookmark[i].url}">${bookmark[i].name}</a>
+            <span id="remove-favorite" news-id="${bookmark[i].id}"><i class="fas fa-minus-square"></i></span>
+          </div>
         `;
     };
 
@@ -287,8 +287,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const displayNav = pseudo => {
     mainNav.innerHTML = `
-        <p>Hello ${pseudo}, découvres les news du monde entier !</p>
-        <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i>Se déconnecter</button>
+        <h3>Hello ${pseudo}, découvres les news du monde entier !</h3>
+        <div>
+          <button id="fav"><i class="fas fa-heart"></i>Favoris</button>
+          <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i>Se déconnecter</button>
+        </div>
     `;
 
     mainNav.classList.remove('hidden');

@@ -1,25 +1,19 @@
-.body {
-}
-
-header, main, footer {
+/*
+* Generals
+*/
+body {
   padding: 8rem;
 }
 
-.hidden{
-  display: none;
-}
-
-.open {
-  display: block;
-}
-
 i {
-  margin-right: 5px;
+  margin: 0 5px;
 }
 
 .button, button, input[type='button'], input[type='reset'], input[type='submit'] {
   background-color: #FC930A;
   border-color: #FC930A;
+  padding: 0 1.0rem;
+  margin-bottom: 0rem;
 }
 
 h1, h2 {
@@ -31,6 +25,89 @@ h1 {
   border-bottom: 3px solid #FC930A;
 }
 
+h3 {
+  font-family: 'Roboto Mono', monospace;
+  margin-bottom: 0;
+}
+
+p {
+  margin-bottom: 0;
+}
+
 nav p {
   font-family: 'Roboto Mono', monospace;
+}
+
+a {
+  color: #FC930A;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 600;
+}
+
+figcaption {
+  font-size: 14px;
+  font-style: italic;
+}
+
+/*
+* JS
+*/
+
+.hidden{
+  display: none;
+}
+
+.open {
+  display: block;
+}
+
+/*
+* Elements
+*/
+
+/* NAv */
+
+aside {
+  margin-bottom: 1.5rem;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Article */
+
+#newsList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+article {
+  display: flex;
+  align-items: center;
+  flex-basis: 50%;
+}
+
+article figure {
+  width: 300px;
+}
+
+#favoriteList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#favoriteList .fav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+#favoriteList .fav-item p {
+  margin-right: 10px;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 600;
 }
