@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const displayNav = pseudo => {
     mainNav.innerHTML = `
-        <h3>Hello ${pseudo}, découvres les news du monde entier !</h3>
+        <h3><strong>Hello ${pseudo}</strong>, </br>découvres les news du monde entier !</h3>
         <div>
           <button id="fav"><i class="fas fa-heart"></i>Favoris</button>
           <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i>Se déconnecter</button>
@@ -297,6 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mainNav.classList.remove('hidden');
     favoriteList.classList.remove('hidden');
 
+    // Logout
     document.querySelector('#logoutBtn').addEventListener('click', () => {
         // Delete LocalStorage
         localStorage.removeItem(localSt);
@@ -304,6 +305,11 @@ document.addEventListener('DOMContentLoaded', () => {
         registerForm.classList.remove('hidden');
         loginForm.classList.remove('hidden');
         searchForm.classList.remove('open');
+    });
+
+    // DIsplay bar favorite
+    document.querySelector('#fav').addEventListener('click', () => {
+      favoriteList.classList.toggle('visible');
     })
   }
 

@@ -16,6 +16,10 @@ i {
   margin-bottom: 0rem;
 }
 
+input[type='email']:focus, input[type='number']:focus, input[type='password']:focus, input[type='search']:focus, input[type='tel']:focus, input[type='text']:focus, input[type='url']:focus, textarea:focus, select:focus {
+  border-color: #FC930A;
+}
+
 h1, h2 {
   font-family: 'Roboto Mono', monospace;
   color: #FC930A;
@@ -27,7 +31,6 @@ h1 {
 
 h3 {
   font-family: 'Roboto Mono', monospace;
-  margin-bottom: 0;
 }
 
 p {
@@ -71,12 +74,6 @@ aside {
   margin-bottom: 1.5rem;
 }
 
-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 /* Article */
 
 #newsList {
@@ -95,8 +92,19 @@ article figure {
 }
 
 #favoriteList {
-  display: flex;
-  flex-wrap: wrap;
+  position: fixed;
+  background: wheat;
+  top: 0;
+  right: 0;
+  width: 30%;
+  height: 100vh;
+  transform: translateX(100%);
+  transition: all .3s ease;
+  overflow-x: scroll;
+}
+
+#favoriteList.visible {
+  transform: translateX(0);
 }
 
 #favoriteList .fav-item {
